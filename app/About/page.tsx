@@ -46,7 +46,15 @@ const AboutPage: React.FC = () => {
               <span className="block w-16 h-1 bg-[#9e9210] mt-2 rounded-full"></span>
             </h2>
             <p className="text-gray-700 text-lg leading-relaxed">
-              The Serjeant At Arms Society was founded in [Year] to unite individuals committed to discipline, leadership, and service. We foster integrity and accountability among members while positively impacting communities nationwide.
+              History of the Serjeant-At-Arms
+
+The office of the Serjeant-At-Arms is one of the oldest parliamentary institutions in the world, with its origins traced to the British Parliament in the 12th century. The title “Serjeant” comes from the medieval word “serviens”, meaning servant of the Crown. These officers served the King directly and were entrusted with matters of security, enforcement, and ceremonial responsibilities.
+
+By the 14th century, the Serjeant-At-Arms had become an established officer of the House of Commons and House of Lords in the United Kingdom. Their duties evolved from being the King’s enforcers to the Parliament’s guardians.
+
+As the Westminster parliamentary system spread around the world, including Kenya, Uganda, India, Canada, Australia, and many Commonwealth countries. The office of the Serjeant-At-Arms became a key pillar in legislative assemblies.
+
+In Kenya, the office was inherited from the British parliamentary tradition during the colonial period.
             </p>
           </motion.div>
 

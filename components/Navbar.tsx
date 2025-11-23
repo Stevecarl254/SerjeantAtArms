@@ -3,15 +3,17 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { User, LogIn, UserPlus, Settings, LogOut, Menu, X } from "lucide-react";
+import { User, LogIn, UserPlus, Settings, LogOut, Menu, X, ChevronDown } from "lucide-react";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const [isMobileAccountOpen, setIsMobileAccountOpen] = useState(false);
+  const [isResourcesOpen, setIsResourcesOpen] = useState(false);
 
   const accountRefDesktop = useRef<HTMLDivElement>(null);
   const accountRefMobile = useRef<HTMLDivElement>(null);
+  const resourcesRefDesktop = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
   // Close dropdowns when clicking outside
@@ -30,6 +32,13 @@ const Navbar: React.FC = () => {
       ) {
         setIsMobileAccountOpen(false);
       }
+
+      if (
+        resourcesRefDesktop.current &&
+        !resourcesRefDesktop.current.contains(event.target as Node)
+      ) {
+        setIsResourcesOpen(false);
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
@@ -39,8 +48,18 @@ const Navbar: React.FC = () => {
     { name: "Home", href: "/" },
     { name: "About", href: "/About" },
     { name: "Events", href: "/Event" },
+    { name: "Gallery", href: "/Gallery" },
     { name: "Membership", href: "/Membership" },
+    // Public Resources will be handled separately for dropdown
     { name: "Contact", href: "/Contact" },
+  ];
+
+  const publicResources = [
+    { name: "By-laws", href: "/Resources/Bylaws" },
+    { name: "Standing Orders", href: "/public-resources/standing-orders" },
+    { name: "Constitution", href: "/Resources/Constitution" },
+    { name: "PCS Act 2019", href: "/Resources/PCSAct2019" },
+    { name: "Strategic Plan 2019-2030 PSC", href: "/Resources/StrategicPlan" },
   ];
 
   return (
@@ -52,8 +71,55 @@ const Navbar: React.FC = () => {
         </Link>
 
         {/* Desktop Menu */}
-        <nav className="hidden md:flex space-x-8 text-[#002366] font-medium">
-          {navLinks.map((link) => {
+        <nav className="hidden md:flex space-x-8 text-[#002366] font-medium items-center">
+          {navLinks.slice(0, 5).map((link) => { // first part before public resources
+            const isActive = pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`relative group ${
+                  isActive ? "font-bold text-[#9e9210]" : "text-[#002366]"
+                }`}
+              >
+                {link.name}
+                <span
+                  className={`absolute left-0 -bottom-1 h-0.5 bg-[#9e9210] transition-all duration-300 ${
+                    isActive ? "w-full" : "w-0 group-hover:w-full"
+                  }`}
+                ></span>
+              </Link>
+            );
+          })}
+
+          {/* Public Resources Dropdown */}
+          <div className="relative" ref={resourcesRefDesktop}>
+            <button
+              onClick={() => setIsResourcesOpen(!isResourcesOpen)}
+              className="font-medium text-[#002366] hover:text-[#9e9210] flex items-center gap-1"
+            >
+              Public Resources
+              <ChevronDown
+                size={16}
+                className={`transition-transform duration-300 ${isResourcesOpen ? "rotate-180" : ""}`}
+              />
+            </button>
+            {isResourcesOpen && (
+              <div className="absolute top-full left-0 mt-2 w-60 bg-white rounded-xl shadow-lg border border-gray-100 transition-all z-50">
+                {publicResources.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="block px-4 py-2 text-[#002366] hover:bg-[#9e9210]/20 transition"
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {navLinks.slice(5).map((link) => { // remaining links after public resources
             const isActive = pathname === link.href;
             return (
               <Link
@@ -142,7 +208,48 @@ const Navbar: React.FC = () => {
       {isOpen && (
         <div className="md:hidden bg-gray-50 border-t border-gray-200">
           <nav className="flex flex-col space-y-2 p-4 text-[#002366] font-medium">
-            {navLinks.map((link) => {
+            {navLinks.slice(0, 5).map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className={`hover:text-[#9e9210] ${
+                    isActive ? "font-bold text-[#9e9210]" : ""
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              );
+            })}
+
+            {/* Mobile Public Resources Dropdown */}
+            <div className="flex flex-col">
+              <button
+                onClick={() => setIsResourcesOpen(!isResourcesOpen)}
+                className="text-[#002366] font-medium flex justify-between items-center px-2 py-2 hover:text-[#9e9210] transition"
+              >
+                Public Resources
+                <ChevronDown
+                  size={16}
+                  className={`transition-transform duration-300 ${isResourcesOpen ? "rotate-180" : ""}`}
+                />
+              </button>
+              {isResourcesOpen &&
+                publicResources.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    onClick={() => setIsOpen(false)}
+                    className="pl-4 py-2 text-[#002366] hover:text-[#9e9210] transition"
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+            </div>
+
+            {navLinks.slice(5).map((link) => { // remaining links
               const isActive = pathname === link.href;
               return (
                 <Link
