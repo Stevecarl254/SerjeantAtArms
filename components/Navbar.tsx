@@ -55,11 +55,11 @@ const Navbar: React.FC = () => {
   ];
 
   const publicResources = [
-    { name: "By-laws", href: "/Resources/Bylaws" },
+    { name: "By-laws", href: "/public-resources/By-Laws" },
     { name: "Standing Orders", href: "/public-resources/standing-orders" },
-    { name: "Constitution", href: "/Resources/Constitution" },
-    { name: "PCS Act 2019", href: "/Resources/PCSAct2019" },
-    { name: "Strategic Plan 2019-2030 PSC", href: "/Resources/StrategicPlan" },
+    { name: "Constitution", href: "/public-resources/Constitution" },
+    { name: "PCS Act 2019", href: "/public-resources/pcs-act-2019" },
+    { name: "Strategic Plan 2019-2030 PSC", href: "/public-resources/strategic-plan" },
   ];
 
   return (
